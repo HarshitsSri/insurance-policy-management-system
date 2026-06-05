@@ -1,6 +1,9 @@
 package com.monocept.demo.dto;
 
 
+import com.monocept.demo.enums.PremiumType;
+import com.monocept.demo.enums.ProductType;
+
 import lombok.Getter;
 import lombok.Setter;
 

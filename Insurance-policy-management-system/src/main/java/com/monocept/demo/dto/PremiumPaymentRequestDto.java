@@ -1,6 +1,9 @@
 package com.monocept.demo.dto;
 
 
+import com.monocept.demo.enums.PaymentMode;
+import com.monocept.demo.enums.PaymentStatus;
+
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

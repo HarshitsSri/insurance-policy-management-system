@@ -1,6 +1,7 @@
 package com.monocept.demo.dto;
 import java.time.LocalDateTime;
 
+import com.monocept.demo.enums.ProductType;
 
 import lombok.Getter;
 import lombok.Setter;

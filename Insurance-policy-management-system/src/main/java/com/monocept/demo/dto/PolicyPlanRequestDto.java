@@ -2,6 +2,8 @@ package com.monocept.demo.dto;
 
 
 
+import com.monocept.demo.enums.PremiumType;
+
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

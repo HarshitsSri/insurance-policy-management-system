@@ -3,7 +3,8 @@ package com.monocept.demo.dto;
 
 import java.time.LocalDateTime;
 
-
+import com.monocept.demo.enums.PaymentMode;
+import com.monocept.demo.enums.PaymentStatus;
 
 import lombok.Getter;
 import lombok.Setter;
