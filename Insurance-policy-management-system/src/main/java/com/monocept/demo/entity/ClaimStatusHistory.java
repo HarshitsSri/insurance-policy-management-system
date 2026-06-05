@@ -23,7 +23,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "claim_status_history")
-public class ClaimStatusHistory {
+public class ClaimStatusHistory extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +45,5 @@ public class ClaimStatusHistory {
     @JoinColumn(name = "updated_by", nullable = false)
     private User updatedBy;
 
-    @Column(nullable = false)
-    private LocalDateTime updatedDate;
+
 }
