@@ -3,9 +3,9 @@ package com.monocept.demo.dto;
 
 import java.time.LocalDate;
 
-import com.insurance.enums.PolicyStatus;
-import com.insurance.enums.ProductType;
-import com.insurance.enums.PremiumType;
+import com.monocept.demo.enums.PolicyStatus;
+import com.monocept.demo.enums.PremiumType;
+import com.monocept.demo.enums.ProductType;
 
 import lombok.Getter;
 import lombok.Setter;

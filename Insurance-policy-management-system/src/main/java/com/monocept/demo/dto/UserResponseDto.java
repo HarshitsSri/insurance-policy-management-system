@@ -4,11 +4,11 @@ package com.monocept.demo.dto;
 
 import java.time.LocalDateTime;
 
+import com.monocept.demo.enums.Role;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
 @NoArgsConstructor

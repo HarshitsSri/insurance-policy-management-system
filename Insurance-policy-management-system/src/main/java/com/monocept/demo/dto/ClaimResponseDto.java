@@ -4,6 +4,7 @@ package com.monocept.demo.dto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.monocept.demo.enums.ClaimStatus;
 
 import lombok.Getter;
 import lombok.Setter;
