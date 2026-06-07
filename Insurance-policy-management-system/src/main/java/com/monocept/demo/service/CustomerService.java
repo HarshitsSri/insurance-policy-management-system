@@ -2,14 +2,15 @@ package com.monocept.demo.service;
 
 import com.monocept.demo.dto.CustomerRequestDto;
 import com.monocept.demo.dto.CustomerResponseDto;
+import com.monocept.demo.dto.PageResponseDto;
 
 public interface CustomerService {
 
-	CustomerResponseDto createProfile(CustomerRequestDto request, String email);
+	CustomerResponseDto createProfile(CustomerRequestDto request);
 
-	CustomerResponseDto updateProfile(Long customerId, CustomerRequestDto request, String email);
+	CustomerResponseDto updateProfile(CustomerRequestDto request);
 
-	CustomerResponseDto getOwnProfile(String email);
+	CustomerResponseDto getOwnProfile();
 
 	CustomerResponseDto getCustomerById(Long customerId);
 

@@ -3,6 +3,7 @@ package com.monocept.demo.controller;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,13 +26,15 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final UserService userService;
-
+	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/agents")
 	public ResponseEntity<UserResponseDto> createAgent(@RequestBody CreateAgentRequestDto dto) {
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.createAgent(dto));
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping
 	public Page<UserResponseDto> getAllUsers(@RequestParam(defaultValue = "0") int page,
 
@@ -40,12 +43,14 @@ public class UserController {
 		return userService.getAllUsers(page, size);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/{id}")
 	public UserResponseDto getUser(@PathVariable Long id) {
 
 		return userService.getUserById(id);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}/status")
 	public UserResponseDto updateStatus(@PathVariable Long id, @RequestBody UserStatusUpdateRequestDto dto) {
 

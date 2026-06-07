@@ -1,9 +1,11 @@
 package com.monocept.demo.service;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import com.monocept.demo.dto.CreateAgentRequestDto;
 import com.monocept.demo.dto.UserResponseDto;
@@ -14,6 +16,10 @@ import com.monocept.demo.exception.DuplicateResourceException;
 import com.monocept.demo.exception.ResourceNotFoundException;
 import com.monocept.demo.repository.UserRepository;
 
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
 public class UserServiceImplementation implements UserService {
 
 	private final UserRepository userRepository;

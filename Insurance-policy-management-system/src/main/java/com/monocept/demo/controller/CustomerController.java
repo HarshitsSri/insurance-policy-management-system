@@ -2,13 +2,8 @@ package com.monocept.demo.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import com.monocept.demo.dto.CustomerRequestDto;
 import com.monocept.demo.dto.CustomerResponseDto;
@@ -22,58 +17,50 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CustomerController {
 
-	private final CustomerService customerService;
+    private final CustomerService customerService;
 
-	@PostMapping("/create-profile")
-//    @PreAuthorize("hasRole('CUSTOMER')")
-	public ResponseEntity<CustomerResponseDto> createProfile(@PathVariable String email,
-			@Valid @RequestBody CustomerRequestDto request) {
+    // Customer creates own profile
+    @PostMapping("/profile")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<CustomerResponseDto> createProfile(
+            @Valid @RequestBody CustomerRequestDto request) {
 
-		CustomerResponseDto response = customerService.createProfile(request, email);
+        CustomerResponseDto response = customerService.createProfile(request);
 
-		return new ResponseEntity<>(response, HttpStatus.CREATED);
-	}
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
 
-	@PutMapping("/update-profile")
-//	@PreAuthorize("hasRole('CUSTOMER')")
+    // Customer views own profile
+    @GetMapping("/profile")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<CustomerResponseDto> getOwnProfile() {
+
+        CustomerResponseDto response = customerService.getOwnProfile();
+
+        return ResponseEntity.ok(response);
+    }
+
+    // Customer updates own profile
+    @PutMapping("/profile")
+    @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<CustomerResponseDto> updateProfile(
-            @PathVariable Long customerId,
-            @Valid @RequestBody CustomerRequestDto request,
-            @PathVariable String email) {
+            @Valid @RequestBody CustomerRequestDto request) {
 
-        CustomerResponseDto response = customerService.updateProfile(customerId, request, email);
+        CustomerResponseDto response = customerService.updateProfile(request);
+
         return ResponseEntity.ok(response);
     }
 
-	@GetMapping("/get-profile")
-//	@PreAuthorize("hasRole('CUSTOMER')")
-	public ResponseEntity<CustomerResponseDto> getProfile(@PathVariable String email) {
+    // Admin / Agent view customer by id
+    @GetMapping("/{customerId}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('AGENT')")
+    public ResponseEntity<CustomerResponseDto> getCustomer(
+            @PathVariable Long customerId) {
 
-        CustomerResponseDto response = customerService.getOwnProfile(email);
+        CustomerResponseDto response =
+                customerService.getCustomerById(customerId);
+
         return ResponseEntity.ok(response);
     }
-
-	@GetMapping("/{customerId}/profile")
-//	@PreAuthorize("hasRole('ADMIN') or hasRole('AGENT')")
-	public ResponseEntity<CustomerResponseDto> getCustomer(@PathVariable Long customerId) {
-
-        CustomerResponseDto response = customerService.getCustomerById(customerId);
-        return ResponseEntity.ok(response);
-    }
-
-//	@GetMapping
-////	@PreAuthorize("hasRole('ADMIN') or hasRole('AGENT')")
-//	public ResponseEntity<?> getCustomers(
-//
-//			@RequestParam(defaultValue = "0") int page,
-//
-//			@RequestParam(defaultValue = "10") int size,
-//
-//			@RequestParam(defaultValue = "id") String sortBy,
-//
-//			@RequestParam(defaultValue = "asc") String direction) {
-//
-//		return ResponseEntity.ok(customerService.getAllCustomers(page, size, sortBy, direction));
-//	}
 
 }
