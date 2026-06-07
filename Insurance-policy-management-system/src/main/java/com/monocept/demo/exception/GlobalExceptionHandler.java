@@ -16,68 +16,72 @@ import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
-public class GlobalExceptionHandle {
+import com.monocept.demo.dto.ErrorResponseDto;
 
-    // Resource Not Found - 404
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleResourceNotFound(
-            ResourceNotFoundException ex) {
+import jakarta.servlet.http.HttpServletRequest;
 
-        Map<String, Object> errorBody = new HashMap<>();
+	@RestControllerAdvice
+	public class GlobalExceptionHandler {
 
-        errorBody.put("timestamp", LocalDateTime.now());
-        errorBody.put("status", HttpStatus.NOT_FOUND.value());
-        errorBody.put("error", "NOT FOUND");
-        errorBody.put("message", ex.getMessage());
+	    @ExceptionHandler(DuplicateResourceException.class)
+	    public ResponseEntity<ErrorResponseDto> handleDuplicate(
+	            DuplicateResourceException ex,
+	            HttpServletRequest request) {
 
-        return new ResponseEntity<>(errorBody, HttpStatus.NOT_FOUND);
-    }
+	        return new ResponseEntity<>(
+	                new ErrorResponseDto(
+	                        LocalDateTime.now(),
+	                        HttpStatus.BAD_REQUEST.value(),
+	                        "Duplicate Resource",
+	                        ex.getMessage(),
+	                        request.getRequestURI()),
+	                HttpStatus.BAD_REQUEST);
+	    }
 
-    // Duplicate Resource - 409
-    @ExceptionHandler(DuplicateResourceException.class)
-    public ResponseEntity<Map<String, Object>> handleDuplicateResource(
-            DuplicateResourceException ex) {
+	    @ExceptionHandler(ResourceNotFoundException.class)
+	    public ResponseEntity<ErrorResponseDto> handleNotFound(
+	            ResourceNotFoundException ex,
+	            HttpServletRequest request) {
 
-        Map<String, Object> errorBody = new HashMap<>();
+	        return new ResponseEntity<>(
+	                new ErrorResponseDto(
+	                        LocalDateTime.now(),
+	                        HttpStatus.NOT_FOUND.value(),
+	                        "Resource Not Found",
+	                        ex.getMessage(),
+	                        request.getRequestURI()),
+	                HttpStatus.NOT_FOUND);
+	    }
 
-        errorBody.put("timestamp", LocalDateTime.now());
-        errorBody.put("status", HttpStatus.CONFLICT.value());
-        errorBody.put("error", "CONFLICT");
-        errorBody.put("message", ex.getMessage());
+	    @ExceptionHandler(InvalidCredentialsException.class)
+	    public ResponseEntity<ErrorResponseDto> handleInvalidCredentials(
+	            InvalidCredentialsException ex,
+	            HttpServletRequest request) {
 
-        return new ResponseEntity<>(errorBody, HttpStatus.CONFLICT);
-    }
+	        return new ResponseEntity<>(
+	                new ErrorResponseDto(
+	                        LocalDateTime.now(),
+	                        HttpStatus.UNAUTHORIZED.value(),
+	                        "Invalid Credentials",
+	                        ex.getMessage(),
+	                        request.getRequestURI()),
+	                HttpStatus.UNAUTHORIZED);
+	    }
 
-    // Invalid Credentials - 401
-    @ExceptionHandler(InvalidCredentialsException.class)
-    public ResponseEntity<Map<String, Object>> handleInvalidCredentials(
-            InvalidCredentialsException ex) {
+	    @ExceptionHandler(InactiveUserException.class)
+	    public ResponseEntity<ErrorResponseDto> handleInactiveUser(
+	            InactiveUserException ex,
+	            HttpServletRequest request) {
 
-        Map<String, Object> errorBody = new HashMap<>();
-
-        errorBody.put("timestamp", LocalDateTime.now());
-        errorBody.put("status", HttpStatus.UNAUTHORIZED.value());
-        errorBody.put("error", "UNAUTHORIZED");
-        errorBody.put("message", ex.getMessage());
-
-        return new ResponseEntity<>(errorBody, HttpStatus.UNAUTHORIZED);
-    }
-
-    // Inactive User - 403
-    @ExceptionHandler(InactiveUserException.class)
-    public ResponseEntity<Map<String, Object>> handleInactiveUser(
-            InactiveUserException ex) {
-
-        Map<String, Object> errorBody = new HashMap<>();
-
-        errorBody.put("timestamp", LocalDateTime.now());
-        errorBody.put("status", HttpStatus.FORBIDDEN.value());
-        errorBody.put("error", "FORBIDDEN");
-        errorBody.put("message", ex.getMessage());
-
-        return new ResponseEntity<>(errorBody, HttpStatus.FORBIDDEN);
-    }
+	        return new ResponseEntity<>(
+	                new ErrorResponseDto(
+	                        LocalDateTime.now(),
+	                        HttpStatus.FORBIDDEN.value(),
+	                        "Inactive User",
+	                        ex.getMessage(),
+	                        request.getRequestURI()),
+	                HttpStatus.FORBIDDEN);
+	    }
 
     // Unauthorized Access - 403
     @ExceptionHandler(UnauthorizedAccessException.class)
@@ -196,6 +200,7 @@ public class GlobalExceptionHandle {
     public ResponseEntity<Map<String, Object>> handleDataIntegrityViolation(
             DataIntegrityViolationException ex) {
 
+    	ex.printStackTrace();   // ADD THIS
         Map<String, Object> errorBody = new HashMap<>();
 
         errorBody.put("timestamp", LocalDateTime.now());

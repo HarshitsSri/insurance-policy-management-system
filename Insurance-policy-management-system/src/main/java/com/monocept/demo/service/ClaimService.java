@@ -1,6 +1,9 @@
 package com.monocept.demo.service;
 
+import java.util.List;
+
 import com.monocept.demo.dto.ClaimFinalDecisionRequestDto;
+import com.monocept.demo.dto.ClaimRequestDto;
 import com.monocept.demo.dto.ClaimResponseDto;
 import com.monocept.demo.dto.ClaimReviewRequestDto;
 
