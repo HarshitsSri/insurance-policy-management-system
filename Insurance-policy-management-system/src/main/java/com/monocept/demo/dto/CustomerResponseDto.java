@@ -18,7 +18,7 @@ public class CustomerResponseDto {
 
     private String mobileNumber;
 
-    private LocalDate dob;
+    private LocalDate dateOfBirth;
 
     private String address;
 
