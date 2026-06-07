@@ -1,18 +1,24 @@
 package com.monocept.demo.service;
 
+import com.monocept.demo.dto.PageResponseDto;
 import com.monocept.demo.entity.Claim;
 import com.monocept.demo.entity.User;
 import com.monocept.demo.enums.ClaimStatus;
 
 public interface ClaimStatusHistoryService {
 
-    void createHistory(
+    void saveHistory(
             Claim claim,
-            ClaimStatus oldStatus,
+            ClaimStatus previousStatus,
             ClaimStatus newStatus,
             String remarks,
             User updatedBy);
 
-    List<ClaimStatusHistoryResponseDto>
-    getClaimHistory(Long claimId);
+    PageResponseDto<ClaimStatusHistoryResponseDto>
+    getClaimHistory(
+            Long claimId,
+            int page,
+            int size,
+            String sortBy,
+            String direction);
 }
