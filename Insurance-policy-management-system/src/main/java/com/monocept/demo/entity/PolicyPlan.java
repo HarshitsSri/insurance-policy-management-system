@@ -32,7 +32,7 @@ public class PolicyPlan extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
-    private InsuranceProduct insuranceProduct;
+    private Product product;
 
     @Column(nullable = false)
     private String planName;
