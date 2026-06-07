@@ -13,7 +13,7 @@ import com.monocept.demo.entity.Customer;
 public interface CustomerRepository
         extends JpaRepository<Customer, Long> {
 
-    Optional<Customer> findByUserId(Long userId);
+    Customer findByUserId(Long userId);
 
     boolean existsByUserId(Long userId);
 
