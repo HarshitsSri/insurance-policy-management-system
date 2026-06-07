@@ -1,35 +1,29 @@
 package com.monocept.demo.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.monocept.demo.dto.ClaimFinalDecisionRequestDto;
 import com.monocept.demo.dto.ClaimRequestDto;
 import com.monocept.demo.dto.ClaimResponseDto;
 import com.monocept.demo.dto.ClaimReviewRequestDto;
+import com.monocept.demo.dto.PageResponseDto;
+import com.monocept.demo.entity.Claim;
+import com.monocept.demo.enums.ClaimStatus;
 
 public interface ClaimService {
 
-    ClaimResponseDto createClaim(
-            ClaimRequestDto request,
-            String email);
+	ClaimResponseDto raiseClaim(ClaimRequestDto dto);
 
-    ClaimResponseDto reviewClaim(
-            Long claimId,
-            ClaimReviewRequestDto request);
+	ClaimResponseDto reviewClaim(Long claimId, ClaimReviewRequestDto dto);
 
-    ClaimResponseDto finalDecision(
-            Long claimId,
-            ClaimFinalDecisionRequestDto request);
+	ClaimResponseDto finalDecision(Long claimId, ClaimFinalDecisionRequestDto dto);
 
-    ClaimResponseDto getClaimById(
-            Long claimId);
+	ClaimResponseDto getClaimById(Long claimId);
 
-    PageResponseDto<ClaimResponseDto> getAllClaims(
-            int page,
-            int size,
-            String sortBy,
-            String direction);
+	PageResponseDto<ClaimResponseDto> getMyClaims(int page, int size, String sortBy, String direction);
 
-    List<ClaimResponseDto> getOwnClaims(
-            String email);
+	PageResponseDto<ClaimResponseDto> getAllClaims(int page, int size, String sortBy, String direction, String status);
+
+
 }
