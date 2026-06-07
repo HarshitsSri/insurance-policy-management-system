@@ -28,11 +28,11 @@ public class PolicyController {
 
 	@PostMapping("/purchase")
 	@PreAuthorize("hasRole('CUSTOMER')")
-	public ResponseEntity<?> purchasePolicy(@Valid @RequestBody CustomerPolicyPurchaseRequestDto request,
-			@PathVariable String email) {
+	public ResponseEntity<?> purchasePolicy(
 
-		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(policyService.purchasePolicy(request,  email));
+			@Valid @RequestBody CustomerPolicyPurchaseRequestDto request) {
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(policyService.purchasePolicy(request));
 	}
 
 	@PostMapping("/issue")
@@ -44,17 +44,17 @@ public class PolicyController {
 
 	@GetMapping("/my-policies")
 	@PreAuthorize("hasRole('CUSTOMER')")
-	public ResponseEntity<?> myPolicies(@PathVariable String email,
+	public ResponseEntity<?> myPolicies(
 
 			@RequestParam(defaultValue = "0") int page,
 
 			@RequestParam(defaultValue = "10") int size,
 
-			@RequestParam(defaultValue = "id") String sortBy,
+			@RequestParam(defaultValue = "policyId") String sortBy,
 
 			@RequestParam(defaultValue = "desc") String direction) {
 
-		return ResponseEntity.ok(policyService.getMyPolicies(email, page, size, sortBy, direction));
+		return ResponseEntity.ok(policyService.getMyPolicies(page, size, sortBy, direction));
 	}
 
 	@GetMapping("/all-policies")

@@ -1,9 +1,16 @@
 package com.monocept.demo.service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.monocept.demo.dto.CustomerPolicyPurchaseRequestDto;
@@ -34,10 +41,9 @@ public class PolicyServiceImpl implements PolicyService {
 	private final PolicyRepository policyRepository;
 
 	@Override
-	public PolicyResponseDto purchasePolicy(CustomerPolicyPurchaseRequestDto request, String email) {
+	public PolicyResponseDto purchasePolicy(CustomerPolicyPurchaseRequestDto request) {
 
-		User user = userRepository.findByEmail(email)
-				.orElseThrow(() -> new ResourceNotFoundException("User not found"));
+		User user = getCurrentUser();
 
 		Customer customer = customerRepository.findByUserId(user.getUserId());
 		if (customer == null) {
@@ -66,8 +72,7 @@ public class PolicyServiceImpl implements PolicyService {
 		policy.setTotalPremiumPaid(BigDecimal.ZERO);
 
 		Policy saved = policyRepository.save(policy);
-
-		return modelMapper.map(saved, PolicyResponseDto.class);
+		return convertToDto(saved);
 	}
 
 	@Override
@@ -104,22 +109,57 @@ public class PolicyServiceImpl implements PolicyService {
 
 	@Override
 	public PolicyResponseDto getPolicyById(Long policyId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		Policy policy = policyRepository.findById(policyId)
+				.orElseThrow(() -> new ResourceNotFoundException("Policy not found"));
+
+		return convertToDto(policy);
 	}
 
 	@Override
-	public PageResponseDto<PolicyResponseDto> getMyPolicies(String email, int page, int size, String sortBy,
-			String direction) {
-		// TODO Auto-generated method stub
-		return null;
+	public PageResponseDto<PolicyResponseDto> getMyPolicies(int page, int size, String sortBy, String direction) {
+
+		User user = getCurrentUser();
+
+		Customer customer = customerRepository.findByUserId(user.getUserId());
+
+		Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+
+		Pageable pageable = PageRequest.of(page, size, sort);
+
+		Page<Policy> policyPage = policyRepository.findByCustomerCustomerId(customer.getCustomerId(), pageable);
+
+		List<PolicyResponseDto> records = policyPage.getContent().stream().map(this::convertToDto).toList();
+
+		return new PageResponseDto<>(records, policyPage.getNumber(), policyPage.getSize(),
+				policyPage.getTotalElements(), policyPage.getTotalPages(), policyPage.isLast(), sortBy, direction);
 	}
 
 	@Override
 	public PageResponseDto<PolicyResponseDto> getAllPolicies(int page, int size, String sortBy, String direction,
 			String status) {
-		// TODO Auto-generated method stub
-		return null;
+
+		Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+
+		Pageable pageable = PageRequest.of(page, size, sort);
+
+		Page<Policy> policyPage;
+
+		if (status != null) {
+
+			PolicyStatus policyStatus = PolicyStatus.valueOf(status.toUpperCase());
+
+			policyPage = policyRepository.findByPolicyStatus(policyStatus, pageable);
+
+		} else {
+
+			policyPage = policyRepository.findAll(pageable);
+		}
+
+		List<PolicyResponseDto> records = policyPage.getContent().stream().map(this::convertToDto).toList();
+
+		return new PageResponseDto<>(records, policyPage.getNumber(), policyPage.getSize(),
+				policyPage.getTotalElements(), policyPage.getTotalPages(), policyPage.isLast(), sortBy, direction);
 	}
 
 	@Override
@@ -137,7 +177,7 @@ public class PolicyServiceImpl implements PolicyService {
 		policy.setPolicyStatus(PolicyStatus.CANCELLED);
 
 		Policy saved = policyRepository.save(policy);
-		return modelMapper.map(saved, PolicyResponseDto.class);
+		return convertToDto(saved);
 	}
 
 //generating policy number method
@@ -151,6 +191,36 @@ public class PolicyServiceImpl implements PolicyService {
 		}
 
 		return policyNumber;
+	}
+
+	private User getCurrentUser() {
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		String email = authentication.getName();
+
+		return userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+	}
+
+	private PolicyResponseDto convertToDto(Policy policy) {
+
+		PolicyResponseDto dto = modelMapper.map(policy, PolicyResponseDto.class);
+
+		dto.setCustomerName(policy.getCustomer().getUser().getFullName());
+
+		dto.setPlanName(policy.getPolicyPlan().getPlanName());
+
+		dto.setProductType(policy.getPolicyPlan().getProduct().getProductType());
+
+		dto.setCoverageAmount(policy.getPolicyPlan().getCoverageAmount().doubleValue());
+
+		dto.setPremiumAmount(policy.getPolicyPlan().getPremiumAmount().doubleValue());
+
+		dto.setPremiumType(policy.getPolicyPlan().getPremiumType());
+
+		dto.setTotalPremiumPaid(policy.getTotalPremiumPaid().doubleValue());
+
+		return dto;
 	}
 
 }

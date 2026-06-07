@@ -7,13 +7,13 @@ import com.monocept.demo.dto.PolicyResponseDto;
 
 public interface PolicyService {
 
-	PolicyResponseDto purchasePolicy(CustomerPolicyPurchaseRequestDto request, String email);
+	public PolicyResponseDto purchasePolicy(CustomerPolicyPurchaseRequestDto request);
 
 	PolicyResponseDto issuePolicy(PolicyIssueRequestDto request);
 
 	PolicyResponseDto getPolicyById(Long policyId);
 
-	PageResponseDto<PolicyResponseDto> getMyPolicies(String email, int page, int size, String sortBy, String direction);
+	PageResponseDto<PolicyResponseDto> getMyPolicies(int page, int size, String sortBy, String direction);
 
 	PageResponseDto<PolicyResponseDto> getAllPolicies(int page, int size, String sortBy, String direction,
 			String status);

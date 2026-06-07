@@ -11,18 +11,13 @@ import com.monocept.demo.entity.Policy;
 import com.monocept.demo.enums.PolicyStatus;
 
 @Repository
-public interface PolicyRepository
-        extends JpaRepository<Policy, Long> {
+public interface PolicyRepository extends JpaRepository<Policy, Long> {
 
-    Optional<Policy> findByPolicyNumber(String policyNumber);
+	Optional<Policy> findByPolicyNumber(String policyNumber);
 
-    Page<Policy> findByCustomerId(
-            Long customerId,
-            Pageable pageable);
+	Page<Policy> findByCustomerCustomerId(Long customerId, Pageable pageable);
 
-    Page<Policy> findByPolicyStatus(
-            PolicyStatus status,
-            Pageable pageable);
+	Page<Policy> findByPolicyStatus(PolicyStatus status, Pageable pageable);
 
-    boolean existsByPolicyNumber(String policyNumber);
+	boolean existsByPolicyNumber(String policyNumber);
 }
