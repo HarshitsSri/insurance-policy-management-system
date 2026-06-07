@@ -1,5 +1,8 @@
 package com.monocept.demo.service;
 
+import com.monocept.demo.dto.CustomerRequestDto;
+import com.monocept.demo.dto.CustomerResponseDto;
+
 public interface CustomerService {
 
     CustomerResponseDto createProfile(
