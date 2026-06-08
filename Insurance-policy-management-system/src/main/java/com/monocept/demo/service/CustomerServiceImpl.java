@@ -59,8 +59,10 @@ public class CustomerServiceImpl implements CustomerService {
 
 		User user = getCurrentUser();
 
-		Customer customer = customerRepository.findByUserId(user.getUserId())
-				.orElseThrow(() -> new ResourceNotFoundException("Customer profile not found"));
+		Customer customer = customerRepository.findByUserId(user.getUserId());
+		if (customer == null) {
+			new ResourceNotFoundException("Customer profile not found");
+		}
 
 		customer.setDateOfBirth(request.getDateOfBirth());
 		customer.setAddress(request.getAddress());
@@ -86,8 +88,10 @@ public class CustomerServiceImpl implements CustomerService {
 
 		User user = getCurrentUser();
 
-		Customer customer = customerRepository.findByUserId(user.getUserId())
-				.orElseThrow(() -> new ResourceNotFoundException("Customer profile not found"));
+		Customer customer = customerRepository.findByUserId(user.getUserId());
+		if (customer == null) {
+			new ResourceNotFoundException("Customer profile not found");
+		}
 
 		CustomerResponseDto response = modelMapper.map(customer, CustomerResponseDto.class);
 
