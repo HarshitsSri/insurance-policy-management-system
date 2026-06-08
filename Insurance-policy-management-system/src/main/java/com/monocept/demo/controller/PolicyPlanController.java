@@ -26,83 +26,52 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PolicyPlanController {
 
-    private final PolicyPlanService planService;
+	private final PolicyPlanService planService;
 
-    @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<PolicyPlanResponseDto>
-    createPlan(
-            @Valid
-            @RequestBody PolicyPlanRequestDto dto) {
+	@PostMapping
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<PolicyPlanResponseDto> createPlan(@Valid @RequestBody PolicyPlanRequestDto dto) {
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(
-                        planService.createPlan(dto));
-    }
+		return ResponseEntity.status(HttpStatus.CREATED).body(planService.createPlan(dto));
+	}
 
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public PolicyPlanResponseDto updatePlan(
-            @PathVariable Long id,
-            @Valid
-            @RequestBody PolicyPlanRequestDto dto) {
+	@PutMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public PolicyPlanResponseDto updatePlan(@PathVariable Long id, @Valid @RequestBody PolicyPlanRequestDto dto) {
 
-        return planService.updatePlan(
-                id,
-                dto);
-    }
+		return planService.updatePlan(id, dto);
+	}
 
-    @PatchMapping("/{id}/status")
-    @PreAuthorize("hasRole('ADMIN')")
-    public PolicyPlanResponseDto updateStatus(
-            @PathVariable Long id,
-            @RequestParam Boolean active) {
+	@PatchMapping("/{id}/status")
+	@PreAuthorize("hasRole('ADMIN')")
+	public PolicyPlanResponseDto updateStatus(@PathVariable Long id, @RequestParam Boolean active) {
 
-        return planService.updateStatus(
-                id,
-                active);
-    }
+		return planService.updateStatus(id, active);
+	}
 
-    @GetMapping("/{id}")
-    @PreAuthorize(
-    "hasAnyRole('ADMIN','AGENT','CUSTOMER')")
-    public PolicyPlanResponseDto getPlan(
-            @PathVariable Long id) {
+	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN','AGENT','CUSTOMER')")
+	public PolicyPlanResponseDto getPlan(@PathVariable Long id) {
 
-        return planService.getPlanById(id);
-    }
+		return planService.getPlanById(id);
+	}
 
-    @GetMapping
-    @PreAuthorize(
-    "hasAnyRole('ADMIN','AGENT','CUSTOMER')")
-    public PageResponseDto<PolicyPlanResponseDto>
-    getPlans(
+	@GetMapping
+	@PreAuthorize("hasAnyRole('ADMIN','AGENT','CUSTOMER')")
+	public PageResponseDto<PolicyPlanResponseDto> getPlans(
 
-            @RequestParam(defaultValue = "0")
-            int page,
+			@RequestParam(defaultValue = "0") int page,
 
-            @RequestParam(defaultValue = "10")
-            int size,
+			@RequestParam(defaultValue = "10") int size,
 
-            @RequestParam(defaultValue = "planId")
-            String sortBy,
+			@RequestParam(defaultValue = "planId") String sortBy,
 
-            @RequestParam(defaultValue = "asc")
-            String direction,
+			@RequestParam(defaultValue = "asc") String direction,
 
-            @RequestParam(required = false)
-            Long productId,
+			@RequestParam(required = false) Long productId,
 
-            @RequestParam(required = false)
-            Boolean active) {
+			@RequestParam(required = false) Boolean active) {
 
-        return planService.getAllPlans(
-                page,
-                size,
-                sortBy,
-                direction,
-                productId,
-                active);
-    }
+		return planService.getAllPlans(page, size, sortBy, direction, productId, active);
+	}
 }
