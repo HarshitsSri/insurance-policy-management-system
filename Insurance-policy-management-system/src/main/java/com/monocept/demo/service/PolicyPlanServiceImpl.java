@@ -32,25 +32,25 @@ public class PolicyPlanServiceImpl implements PolicyPlanService {
 	@Override
 	public PolicyPlanResponseDto createPlan(PolicyPlanRequestDto dto) {
 
-		Product product = productRepository.findById(dto.getProductId())
-				.orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+	    Product product = productRepository.findById(dto.getProductId())
+	            .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
-		if (!product.getActive()) {
-			throw new RuntimeException("Inactive product cannot have plans");
-		}
+	    PolicyPlan plan = new PolicyPlan();
 
-		if (planRepository.existsByProductProductIdAndPlanNameIgnoreCase(product.getProductId(), dto.getPlanName())) {
+	    plan.setProduct(product);
+	    plan.setPlanName(dto.getPlanName());
+	    plan.setCoverageAmount(java.math.BigDecimal.valueOf(dto.getCoverageAmount()));
+	    plan.setPremiumAmount(java.math.BigDecimal.valueOf(dto.getPremiumAmount()));
+	    plan.setPremiumType(dto.getPremiumType());
+	    plan.setDuration(dto.getDuration());
+	    plan.setTermsAndConditions(dto.getTermsAndConditions());
+	    plan.setActive(dto.getActive());
 
-			throw new DuplicateResourceException("Plan already exists");
-		}
+	    System.out.println("PLAN ID = " + plan.getPlanId());
 
-		PolicyPlan plan = modelMapper.map(dto, PolicyPlan.class);
+	    PolicyPlan savedPlan = planRepository.save(plan);
 
-		plan.setProduct(product);
-
-		PolicyPlan savedPlan = planRepository.save(plan);
-
-		return convertToDto(savedPlan);
+	    return convertToDto(savedPlan);
 	}
 
 	@Override
