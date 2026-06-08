@@ -35,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
 			throw new UnauthorizedAccessException("Only customers can create profile");
 		}
 
-		if (customerRepository.existsByUserId(user.getUserId())) {
+		if (customerRepository.existsByUserUserId(user.getUserId())) {
 			throw new DuplicateResourceException("Profile already exists");
 		}
 
@@ -59,7 +59,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 		User user = getCurrentUser();
 
-		Customer customer = customerRepository.findByUserId(user.getUserId());
+		Customer customer = customerRepository.findByUserUserId(user.getUserId());
 		if (customer == null) {
 			new ResourceNotFoundException("Customer profile not found");
 		}
@@ -88,7 +88,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 		User user = getCurrentUser();
 
-		Customer customer = customerRepository.findByUserId(user.getUserId());
+		Customer customer = customerRepository.findByUserUserId(user.getUserId());
 		if (customer == null) {
 			new ResourceNotFoundException("Customer profile not found");
 		}

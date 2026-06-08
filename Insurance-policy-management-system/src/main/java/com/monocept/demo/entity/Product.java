@@ -1,6 +1,7 @@
 package com.monocept.demo.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.monocept.demo.enums.ProductType;
 
@@ -11,6 +12,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -61,4 +63,8 @@ public class Product {
 	public void preUpdate() {
 		updatedDate = LocalDateTime.now();
 	}
+
+	@OneToMany(mappedBy = "product")
+	private List<PolicyPlan> policyPlans;
+
 }

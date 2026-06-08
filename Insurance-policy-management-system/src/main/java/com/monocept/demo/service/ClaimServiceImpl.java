@@ -56,7 +56,7 @@ public class ClaimServiceImpl implements ClaimService {
 
 		User user = getCurrentUser();
 
-		Customer customer = customerRepository.findByUserId(user.getUserId());
+		Customer customer = customerRepository.findByUserUserId(user.getUserId());
 
 		if (customer == null) {
 			throw new ResourceNotFoundException("Customer profile not found");
@@ -230,7 +230,7 @@ public class ClaimServiceImpl implements ClaimService {
 
 		User user = getCurrentUser();
 
-		Customer customer = customerRepository.findByUserId(user.getUserId());
+		Customer customer = customerRepository.findByUserUserId(user.getUserId());
 
 		if (customer == null) {
 			throw new ResourceNotFoundException("Customer profile not found");

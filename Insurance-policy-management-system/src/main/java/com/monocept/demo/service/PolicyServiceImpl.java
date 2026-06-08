@@ -45,7 +45,7 @@ public class PolicyServiceImpl implements PolicyService {
 
 		User user = getCurrentUser();
 
-		Customer customer = customerRepository.findByUserId(user.getUserId());
+		Customer customer = customerRepository.findByUserUserId(user.getUserId());
 		if (customer == null) {
 			throw new ResourceNotFoundException("Customer profile not found");
 		}
@@ -121,7 +121,7 @@ public class PolicyServiceImpl implements PolicyService {
 
 		User user = getCurrentUser();
 
-		Customer customer = customerRepository.findByUserId(user.getUserId());
+		Customer customer = customerRepository.findByUserUserId(user.getUserId());
 
 		Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
 

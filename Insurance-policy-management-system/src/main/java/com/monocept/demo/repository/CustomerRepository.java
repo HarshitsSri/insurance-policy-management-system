@@ -13,9 +13,9 @@ import com.monocept.demo.entity.Customer;
 public interface CustomerRepository
         extends JpaRepository<Customer, Long> {
 
-    Customer findByUserId(Long userId);
+    Customer findByUserUserId(Long userId);
 
-    boolean existsByUserId(Long userId);
+    boolean existsByUserUserId(Long userId);
 
     Page<Customer> findByCity(
             String city,

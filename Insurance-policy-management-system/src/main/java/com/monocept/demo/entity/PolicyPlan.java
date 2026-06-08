@@ -55,7 +55,7 @@ public class PolicyPlan extends BaseEntity {
 
     @Column(nullable = false)
     private boolean active = true;
-    
+
     @OneToMany(mappedBy = "policyPlan")
     private List<Policy> policies;
 }
