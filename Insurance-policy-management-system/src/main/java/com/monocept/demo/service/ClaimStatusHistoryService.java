@@ -1,5 +1,6 @@
 package com.monocept.demo.service;
 
+import com.monocept.demo.dto.ClaimStatusHistoryResponseDto;
 import com.monocept.demo.dto.PageResponseDto;
 import com.monocept.demo.entity.Claim;
 import com.monocept.demo.entity.User;
@@ -15,10 +16,10 @@ public interface ClaimStatusHistoryService {
             User updatedBy);
 
     PageResponseDto<ClaimStatusHistoryResponseDto>
-    getClaimHistory(
-            Long claimId,
-            int page,
-            int size,
-            String sortBy,
-            String direction);
+            getClaimHistory(
+                    Long claimId,
+                    int page,
+                    int size,
+                    String sortBy,
+                    String direction);
 }
