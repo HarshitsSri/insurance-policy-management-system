@@ -8,18 +8,8 @@ import com.monocept.demo.enums.ClaimStatus;
 
 public interface ClaimStatusHistoryService {
 
-    void saveHistory(
-            Claim claim,
-            ClaimStatus previousStatus,
-            ClaimStatus newStatus,
-            String remarks,
-            User updatedBy);
+	void saveHistory(Claim claim, ClaimStatus previousStatus, ClaimStatus newStatus, String remarks, User updatedBy);
 
-    PageResponseDto<ClaimStatusHistoryResponseDto>
-            getClaimHistory(
-                    Long claimId,
-                    int page,
-                    int size,
-                    String sortBy,
-                    String direction);
+	PageResponseDto<ClaimStatusHistoryResponseDto> getClaimHistory(Long claimId, int page, int size, String sortBy,
+			String direction);
 }

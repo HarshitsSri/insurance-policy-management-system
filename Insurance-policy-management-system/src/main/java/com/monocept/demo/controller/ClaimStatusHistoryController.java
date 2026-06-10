@@ -14,29 +14,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ClaimStatusHistoryController {
 
-    private final ClaimStatusHistoryService historyService;
+	private final ClaimStatusHistoryService historyService;
 
-    @GetMapping("/claim/{claimId}")
-    public ResponseEntity<
-            PageResponseDto<
-                    ClaimStatusHistoryResponseDto>>
-        getHistory(
-                @PathVariable Long claimId,
-                @RequestParam(defaultValue = "0")
-                int page,
-                @RequestParam(defaultValue = "10")
-                int size,
-                @RequestParam(defaultValue = "createdAt")
-                String sortBy,
-                @RequestParam(defaultValue = "desc")
-                String direction) {
+	@GetMapping("/claim/{claimId}")
+	public ResponseEntity<PageResponseDto<ClaimStatusHistoryResponseDto>> getHistory(@PathVariable Long claimId,
+			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+			@RequestParam(defaultValue = "createdDate") String sortBy,
+			@RequestParam(defaultValue = "desc") String direction) {
 
-        return ResponseEntity.ok(
-                historyService.getClaimHistory(
-                        claimId,
-                        page,
-                        size,
-                        sortBy,
-                        direction));
-    }
+		return ResponseEntity.ok(historyService.getClaimHistory(claimId, page, size, sortBy, direction));
+	}
 }
