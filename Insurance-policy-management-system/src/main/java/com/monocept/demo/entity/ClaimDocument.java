@@ -2,6 +2,8 @@ package com.monocept.demo.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,9 +36,11 @@ public class ClaimDocument extends BaseEntity{
     @Column(nullable = false)
     private String documentType;
 
-    @Column(nullable = false)
-    private String documentReference;
+    private String documentUrl;
 
-    @Column(nullable = false)
+    private String publicId;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
     private LocalDateTime uploadedDate;
 }

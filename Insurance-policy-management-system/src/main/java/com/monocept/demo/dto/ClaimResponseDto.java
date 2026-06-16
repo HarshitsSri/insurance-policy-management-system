@@ -3,6 +3,7 @@ package com.monocept.demo.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.monocept.demo.enums.ClaimStatus;
 
@@ -36,4 +37,6 @@ public class ClaimResponseDto {
     private LocalDateTime createdDate;
 
     private LocalDateTime updatedDate;
+    
+    private List<ClaimDocumentResponseDto> documents;
 }

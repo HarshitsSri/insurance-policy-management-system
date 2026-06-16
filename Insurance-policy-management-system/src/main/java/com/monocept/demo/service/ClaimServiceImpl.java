@@ -2,6 +2,7 @@ package com.monocept.demo.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.monocept.demo.dto.ClaimDocumentRequestDto;
+import com.monocept.demo.dto.ClaimDocumentResponseDto;
 import com.monocept.demo.dto.ClaimFinalDecisionRequestDto;
 import com.monocept.demo.dto.ClaimRequestDto;
 import com.monocept.demo.dto.ClaimResponseDto;
@@ -110,7 +112,11 @@ public class ClaimServiceImpl implements ClaimService {
 
 			document.setDocumentType(doc.getDocumentType());
 
-			document.setDocumentReference(doc.getDocumentReference());
+			document.setDocumentUrl(doc.getDocumentUrl());
+
+			document.setPublicId(doc.getPublicId());
+			
+			document.setUploadedDate(LocalDateTime.now());
 
 			claimDocumentRepository.save(document);
 		}
@@ -214,15 +220,46 @@ public class ClaimServiceImpl implements ClaimService {
 
 	private ClaimResponseDto convertToDto(Claim claim) {
 
-		ClaimResponseDto dto = modelMapper.map(claim, ClaimResponseDto.class);
+	    ClaimResponseDto dto = modelMapper.map(claim, ClaimResponseDto.class);
 
-		dto.setPolicyNumber(claim.getPolicy().getPolicyNumber());
+	    dto.setPolicyNumber(claim.getPolicy().getPolicyNumber());
 
-		dto.setCustomerName(claim.getPolicy().getCustomer().getUser().getFullName());
+	    dto.setCustomerName(
+	            claim.getPolicy()
+	                 .getCustomer()
+	                 .getUser()
+	                 .getFullName());
 
-		dto.setClaimAmount(claim.getClaimAmount().doubleValue());
+	    dto.setClaimAmount(
+	            claim.getClaimAmount().doubleValue());
 
-		return dto;
+	    dto.setDocuments(
+
+	        claim.getDocuments()
+	             .stream()
+	             .map(doc -> {
+
+	                 ClaimDocumentResponseDto response =
+	                         new ClaimDocumentResponseDto();
+
+	                 response.setDocumentId(
+	                         doc.getDocumentId());
+
+	                 response.setDocumentName(
+	                         doc.getDocumentName());
+
+	                 response.setDocumentType(
+	                         doc.getDocumentType());
+
+	                 response.setDocumentUrl(
+	                         doc.getDocumentUrl());
+
+	                 return response;
+	             })
+	             .toList()
+	    );
+
+	    return dto;
 	}
 
 	@Override
