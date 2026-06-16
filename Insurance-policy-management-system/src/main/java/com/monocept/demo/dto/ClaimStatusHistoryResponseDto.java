@@ -25,5 +25,5 @@ public class ClaimStatusHistoryResponseDto {
 
     private String updatedBy;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdDate;;
 }
