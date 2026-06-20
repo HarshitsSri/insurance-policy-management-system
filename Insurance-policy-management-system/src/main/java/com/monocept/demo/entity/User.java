@@ -51,4 +51,8 @@ public class User extends BaseEntity {
 
 	@OneToMany(mappedBy = "updatedBy")
 	private List<ClaimStatusHistory> claimStatusHistories;
+	
+	// for otp verification
+	private String otp;
+	private java.time.LocalDateTime otpExpiryTime;
 }

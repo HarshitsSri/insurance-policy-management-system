@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.monocept.demo.dto.LoginRequestDto;
 import com.monocept.demo.dto.LoginResponseDto;
 import com.monocept.demo.dto.RegisterRequestDto;
+import com.monocept.demo.dto.VerifyOtpRequestDto;
 import com.monocept.demo.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,16 @@ public class AuthController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body("Registration successful");
+                .body("Registration initiated. Please check your email for the verification code.");
+    }
+
+    @PostMapping("/verify-otp")
+    public ResponseEntity<String> verifyOtp(
+            @RequestBody VerifyOtpRequestDto dto) {
+
+        authService.verifyOtp(dto);
+
+        return ResponseEntity.ok("Email verified successfully! You can now log in.");
     }
 
     @PostMapping("/login")
