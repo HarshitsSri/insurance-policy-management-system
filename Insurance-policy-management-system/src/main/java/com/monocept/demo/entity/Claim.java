@@ -2,6 +2,7 @@ package com.monocept.demo.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.monocept.demo.enums.ClaimStatus;
@@ -56,8 +57,8 @@ public class Claim extends BaseEntity {
     private String adminRemarks;
 
     @OneToMany(mappedBy = "claim")
-    private List<ClaimDocument> documents;
+    private List<ClaimDocument> documents = new ArrayList<>();
 
     @OneToMany(mappedBy = "claim")
-    private List<ClaimStatusHistory> claimStatusHistory;
+    private List<ClaimStatusHistory> claimStatusHistory = new ArrayList<>();
 }

@@ -102,6 +102,8 @@ public class ClaimServiceImpl implements ClaimService {
 
 		Claim savedClaim = claimRepository.save(claim);
 
+		List<ClaimDocument> savedDocuments = new java.util.ArrayList<>();
+
 		for (ClaimDocumentRequestDto doc : dto.getDocuments()) {
 
 			ClaimDocument document = new ClaimDocument();
@@ -118,8 +120,10 @@ public class ClaimServiceImpl implements ClaimService {
 			
 			document.setUploadedDate(LocalDateTime.now());
 
-			claimDocumentRepository.save(document);
+			savedDocuments.add(claimDocumentRepository.save(document));
 		}
+
+		savedClaim.setDocuments(savedDocuments);
 
 		historyService.saveHistory(savedClaim, null, ClaimStatus.SUBMITTED, "Claim submitted", user);
 
@@ -208,7 +212,7 @@ public class ClaimServiceImpl implements ClaimService {
 
 	private String generateClaimNumber() {
 
-		String claimNumber = "CLM-" + System.currentTimeMillis();
+		String claimNumber = "CLM-" + System.currentTimeMillis() + "-" + UUID.randomUUID().toString().substring(0,6).toUpperCase();
 
 		while (claimRepository.existsByClaimNumber(claimNumber)) {
 

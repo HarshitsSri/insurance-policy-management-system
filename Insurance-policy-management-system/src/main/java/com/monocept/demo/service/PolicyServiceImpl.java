@@ -183,7 +183,7 @@ public class PolicyServiceImpl implements PolicyService {
 //generating policy number method
 	private String generatePolicyNumber() {
 
-		String policyNumber = "POL-" + System.currentTimeMillis();
+		String policyNumber = "POL-" + System.currentTimeMillis()+ "-" + UUID.randomUUID().toString().substring(0,6).toUpperCase();
 
 		while (policyRepository.existsByPolicyNumber(policyNumber)) {
 
