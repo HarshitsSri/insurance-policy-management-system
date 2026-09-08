@@ -1,1 +1,5 @@
 /.metadata/
+# Ignore Spring Boot application.properties
+Insurance-Backend/src/main/resources/application.properties
+# Frontend - Node modules
+Insurance-Frontend/node_modules/
